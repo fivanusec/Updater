@@ -1,6 +1,7 @@
 <h1><strong>Updater</strong></h1>
 
-Simple python program that helps automats updating and syncing repositirois in your linux distro. This is still work in progress.
+Simple python program that helps automate updating and syncing repositirois in your linux distro.
+This is still work in progress.
 
 # Installation
 

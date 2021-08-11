@@ -12,12 +12,12 @@ class AutoRemoveSwitch():
             variant = self.prepare(variant)
         method = getattr(self, variant, lambda: "Invalid distro")
         return method()
-    # Not Tested yet
 
+    # Not Tested yet
     def Manjaro():
         os.system("sudo pacman -Rcns $(pacman -Qdtq)")
-    # Not tested yet
 
+    # Not tested yet
     def Arch():
         os.system("sudo pacman -Rcns $(pacman -Qdtq)")
 
@@ -55,12 +55,12 @@ class InstallerSwitch():
             variant = self.prepare(variant)
         method = getattr(self, variant, lambda: "Invalid distro")
         return method()
-    # Not tested yet
 
+    # Not tested yet
     def Arch(self):
         os.system(f"sudo pacman -S {self.program}")
-    # Not tested yet
 
+    # Not tested yet
     def Manjaro(self):
         os.system(f"sudo pacman -S {self.program}")
 
@@ -80,12 +80,12 @@ class Switch():
             variant = self.prepare(variant)
         method = getattr(self, variant, lambda: "Invalid distro")
         return method()
-    # Not tested yet
 
+    # Not tested yet
     def Arch(self):
         os.system("sudo pacman -Syu")
-    # Not tested yet
 
+    # Not tested yet
     def Manjaro(self):
         os.system("sudo pacman -Syu")
 
@@ -129,15 +129,15 @@ class Update():
 
 class Method():
     def __init__(self, args: str):
-        if("-U" in args):
+        if("--update" in args or "-U" in args):
             method = Update()
             method.run()
 
-        if("-I" in args):
+        if("--install" in args or "-I" in args):
             method = Installer()
             method.run()
 
-        if("-AR" in args):
+        if("--autoremove" in args or "-AR" in args):
             method = AutoRemove()
             method.run()
 
@@ -159,9 +159,9 @@ def print_help():
     print_logo()
     print("\
 Usage: \n \
-    -U to update your repositoris \n \
-    -I <package_name> to install package \n \
-    -AR to autoremove unused packages \n \
+    --update, -U to update your repositories \n \
+    --install, -I <package_name> to install package \n \
+    --autoremove, -AR to autoremove unused packages \n \
     ")
 
 
