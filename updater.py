@@ -14,32 +14,18 @@ class AutoRemoveSwitch():
         return method()
 
     # Not Tested yet
-    def Manjaro():
+    def Manjaro(self):
         os.system("sudo pacman -Rcns $(pacman -Qdtq)")
 
     # Not tested yet
-    def Arch():
+    def Arch(self):
         os.system("sudo pacman -Rcns $(pacman -Qdtq)")
 
-    def KDE_Neon():
+    def KDE_neon(self):
         os.system("sudo apt autoremove")
 
-    def Ubuntu():
+    def Ubuntu(self):
         os.system("sudo apt autoremove")
-
-
-class AutoRemove():
-
-    distro_variant = None
-
-    def __init__(self):
-        self.distro_variant = distro.linux_distribution()
-
-    def run(self):
-        print(
-            f"Running autoremove on {self.distro_variant[0]}")
-        run = AutoRemoveSwitch()
-        run.variant(str(self.distro_variant[0]))
 
 
 class InstallerSwitch():
@@ -71,6 +57,34 @@ class InstallerSwitch():
         os.system(f"sudo apt install {self.program}")
 
 
+class RemoveSwitch():
+    program = None
+
+    def prepare(self, variant: str):
+        return variant.replace(r" ", "_")
+
+    def variant(self, variant: str, program: str):
+        self.program = program
+        if(" " in variant):
+            variant = self.prepare(variant)
+            method = getattr(self, variant, lambda: "Invalid distro")
+            return method()
+
+    # Not tested yet
+    def Arch(self):
+        os.system(f"sudo pacman -R {self.program}")
+
+    # Not tested yet
+    def Manjaro(self):
+        os.system(f"sudo pacman -R {self.program}")
+
+    def KDE_neon(self):
+        os.system(f"sudo apt remove {self.program}")
+
+    def Ubuntu(self):
+        os.system(f"sudo apt remove {self.program}")
+
+
 class Switch():
     def prepare(self, variant: str):
         return variant.replace(r" ", "_")
@@ -96,6 +110,20 @@ class Switch():
     def Ubuntu(self):
         os.system("sudo apt update")
         os.system("sudo apt upgrade")
+
+
+class AutoRemove():
+
+    distro_variant = None
+
+    def __init__(self):
+        self.distro_variant = distro.linux_distribution()
+
+    def run(self):
+        print(
+            f"Running autoremove on {self.distro_variant[0]}")
+        run = AutoRemoveSwitch()
+        run.variant(str(self.distro_variant[0]))
 
 
 class Installer():
@@ -127,6 +155,21 @@ class Update():
         run.variant(str(self.distro_variant[0]))
 
 
+class Remove():
+
+    distro_variant = None
+    program = None
+
+    def __init__(self):
+        self.distro_variant = distro.linux_distribution()
+        self.program = input("Input the name of the program: ")
+
+    def run(self):
+        print(f"Running remove for {self.program} on {self.distro_variant[0]}")
+        run = RemoveSwitch()
+        run.variant(str(self.distro_variant[0]), str(self.program))
+
+
 class Method():
     def __init__(self, args: str):
         if("--update" in args or "-U" in args):
@@ -139,6 +182,10 @@ class Method():
 
         if("--autoremove" in args or "-AR" in args):
             method = AutoRemove()
+            method.run()
+
+        if("--remove" in args or "-R" in args):
+            method = Remove()
             method.run()
 
 
@@ -160,7 +207,8 @@ def print_help():
     print("\
 Usage: \n \
     --update, -U to update your repositories \n \
-    --install, -I <package_name> to install package \n \
+    --install, -I to install package \n \
+    --remove, -R to remove package, \n \
     --autoremove, -AR to autoremove unused packages \n \
     ")
 
