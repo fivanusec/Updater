@@ -4,4 +4,4 @@ all:
 	${PY} setup.py build
 
 install:
-	${PY} setup.py install
+	sudo ${PY} setup.py install
