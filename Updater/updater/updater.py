@@ -3,7 +3,7 @@ import os
 import sys
 
 
-class AutoRemoveSwitch():
+class AutoRemoveSwitch:
     def prepare(self, variant: str):
         return variant.replace(r" ", "_")
 
@@ -28,7 +28,7 @@ class AutoRemoveSwitch():
         os.system("sudo apt autoremove")
 
 
-class InstallerSwitch():
+class InstallerSwitch:
 
     program = None
 
@@ -57,7 +57,7 @@ class InstallerSwitch():
         os.system(f"sudo apt install {self.program}")
 
 
-class RemoveSwitch():
+class RemoveSwitch:
     program = None
 
     def prepare(self, variant: str):
@@ -85,7 +85,7 @@ class RemoveSwitch():
         os.system(f"sudo apt remove {self.program}")
 
 
-class Switch():
+class Switch:
     def prepare(self, variant: str):
         return variant.replace(r" ", "_")
 
@@ -112,7 +112,7 @@ class Switch():
         os.system("sudo apt upgrade")
 
 
-class AutoRemove():
+class AutoRemove:
 
     distro_variant = None
 
@@ -126,7 +126,7 @@ class AutoRemove():
         run.variant(str(self.distro_variant[0]))
 
 
-class Installer():
+class Installer:
 
     distro_variant = None
     program = None
@@ -142,7 +142,7 @@ class Installer():
         run.variant(str(self.distro_variant[0]), str(self.program))
 
 
-class Update():
+class Update:
 
     distro_variant = None
 
@@ -155,7 +155,7 @@ class Update():
         run.variant(str(self.distro_variant[0]))
 
 
-class Remove():
+class Remove:
 
     distro_variant = None
     program = None
@@ -170,52 +170,28 @@ class Remove():
         run.variant(str(self.distro_variant[0]), str(self.program))
 
 
-class Method():
+class Method:
     def __init__(self, args: str):
-        if("--update" in args or "-U" in args):
+        if "--update" not in args and "-U" not in args:
+            pass
+        else:
             method = Update()
             method.run()
 
-        if("--install" in args or "-I" in args):
+        if "--install" not in args and "-I" not in args:
+            pass
+        else:
             method = Installer()
             method.run()
 
-        if("--autoremove" in args or "-AR" in args):
+        if "--autoremove" not in args and "-AR" not in args:
+            pass
+        else:
             method = AutoRemove()
             method.run()
 
-        if("--remove" in args or "-R" in args):
+        if "--remove" not in args and "-R" not in args:
+            pass
+        else:
             method = Remove()
             method.run()
-
-
-def print_logo():
-    print(" \n \
-╔╗─╔╗────╔╗──╔╗ \n \
-║║─║║────║║─╔╝╚╗ \n \
-║║─║╠══╦═╝╠═╩╗╔╬══╦═╗ \n \
-║║─║║╔╗║╔╗║╔╗║║║║═╣╔╝ \n \
-║╚═╝║╚╝║╚╝║╔╗║╚╣║═╣║ \n \
-╚═══╣╔═╩══╩╝╚╩═╩══╩╝ \n \
-────║║ \n \
-────╚╝ \n \
-")
-
-
-def print_help():
-    print_logo()
-    print("\
-Usage: \n \
-    --update, -U to update your repositories \n \
-    --install, -I to install package \n \
-    --remove, -R to remove package, \n \
-    --autoremove, -AR to autoremove unused packages \n \
-    ")
-
-
-if __name__ == '__main__':
-    if(len(sys.argv) < 2):
-        print_help()
-    else:
-        print_logo()
-        run = Method(sys.argv[1])

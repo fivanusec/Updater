@@ -1,13 +1,20 @@
-from distro import version
-from setuptools import setup
+from setuptools import setup, find_packages
+
+local_packages = ['file:///lib/Updater/']
 
 setup(
     name="Updater",
     author="Filip Ivanusec",
     author_email="fivanusec@gmail.com",
     version="1.0.0",
-    platforms=['linux'],
-    install_requires=['distro'],
-    scripts=['updater.py'],
-    zip_safe=True
+    packages=[
+        'Updater',
+        'Updater.updater'
+    ],
+    entry_points={
+        'console_scripts': [
+            'updater = Updater:main'
+        ],
+    },
+    dependency_links=local_packages
 )
