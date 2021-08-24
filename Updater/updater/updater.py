@@ -14,7 +14,7 @@ class AutoRemoveSwitch:
         return method()
 
     # Not Tested yet
-    def Manjaro(self):
+    def Manjaro_Linux(self):
         os.system("sudo pacman -Rcns $(pacman -Qdtq)")
 
     # Not tested yet
@@ -47,7 +47,7 @@ class InstallerSwitch:
         os.system(f"sudo pacman -S {self.program}")
 
     # Not tested yet
-    def Manjaro(self):
+    def Manjaro_Linux(self):
         os.system(f"sudo pacman -S {self.program}")
 
     def KDE_neon(self):
@@ -75,7 +75,7 @@ class RemoveSwitch:
         os.system(f"sudo pacman -R {self.program}")
 
     # Not tested yet
-    def Manjaro(self):
+    def Manjaro_Linux(self):
         os.system(f"sudo pacman -R {self.program}")
 
     def KDE_neon(self):
@@ -100,7 +100,7 @@ class Switch:
         os.system("sudo pacman -Syu")
 
     # Not tested yet
-    def Manjaro(self):
+    def Manjaro_Linux(self):
         os.system("sudo pacman -Syu")
 
     def KDE_neon(self):
