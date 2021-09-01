@@ -24,6 +24,7 @@ Usage: \n \
     --install, -I to install package \n \
     --remove, -R to remove package, \n \
     --autoremove, -AR to autoremove unused packages \n \
+    --query, -Q to query for package \n \
     ")
 
 

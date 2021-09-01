@@ -3,6 +3,32 @@ import os
 import sys
 
 
+class QuerySwitch:
+    
+    program = None
+    
+    def prepare(self, variant: str):
+        return variant.replace(r" ", "_")
+
+    def variant(self, variant: str, program: str):
+        if(" " in variant):
+            variant = self.prepare(variant)
+        method = getattr(self, variant, lambda: "Invalid distro")
+        return method()
+    
+    def Manjaro_Linux(self):
+        os.system(f"pacman -Ss {self.program}")
+
+    def Arch(self):
+        os.system(f"pacman -Ss {self.program}")
+
+    def KDE_neon(self):
+        os.system(f"apt search {self.program}")
+
+    def Ubuntu(self):
+        os.system(f"apt search {self.program}")
+
+
 class AutoRemoveSwitch:
     def prepare(self, variant: str):
         return variant.replace(r" ", "_")
@@ -125,6 +151,20 @@ class AutoRemove:
         run = AutoRemoveSwitch()
         run.variant(str(self.distro_variant[0]))
 
+class Query:
+    
+    distro_variant = None
+    program = None
+
+    def __init__(self):
+        self.distro_variant = distro.linux_distribution()
+        self.program = input("Input the name of the program: ")
+
+    def run(self):
+        print(f"Running search for {self.program} on {self.distro_variant[0]}")
+        run = QuerySwitch()
+        run.variant(str(self.distro_variant[0]), str(self.program))
+
 
 class Installer:
 
@@ -194,4 +234,10 @@ class Method:
             pass
         else:
             method = Remove()
+            method.run()
+
+        if "--query" not in args and "-Q" not in args:
+            pass
+        else:
+            method = Query()
             method.run()
